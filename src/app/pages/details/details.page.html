@@ -1,13 +1,71 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>details</ion-title>
+    <ion-title>{{ person?.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goHome()">
+        <ion-icon name="home" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="goToFavourites()">
+        <ion-icon name="heart" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">details</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" *ngIf="person">
+  <div class="profile-image">
+    <img
+      *ngIf="person.profile_path; else noImage"
+      [src]="getProfileUrl(person.profile_path)"
+      alt="{{ person.name }}"
+    />
+    <ng-template #noImage>
+      <p class="no-image">No image available</p>
+    </ng-template>
+  </div>
+
+  <!-- Name -->
+  <h1 class="person-name">{{ person.name }}</h1>
+
+  <!-- Date of Birth/Death: only shown if at least one is available -->
+  <p class="person-dates" *ngIf="person.birthday || person.deathday">
+    <span *ngIf="person.birthday">Born: {{ person.birthday }}</span>
+    <span *ngIf="person.deathday"> | Died: {{ person.deathday }}</span>
+  </p>
+
+  <!-- Place of Birth: only shown if available -->
+  <p class="person-pob" *ngIf="person.place_of_birth">
+    <span>Place of Birth: {{ person.place_of_birth }}</span>
+  </p>
+
+  <!-- also known as -->
+  <p class="person-aka" *ngIf="person.also_known_as.length > 0">
+    <strong>Also known as: {{ person.also_known_as.join(', ') }}</strong>
+  </p>
+
+  <!-- Biography -->
+  <div class="person-bio" *ngIf="person.biography">
+    <h2>Biography</h2>
+    <p>{{ person.biography }}</p>
+  </div>
+
+  <!-- Other movies -->
+  <h2 class="section-heading">Other Movies</h2>
+  <ion-list>
+    <ion-item
+      *ngFor="let movie of movies"
+      button
+      (click)="openMovie(movie)">
+
+      <ion-label>{{ movie.title }}</ion-label>
+
+      <ion-thumbnail slot="end">
+        <img
+          *ngIf="movie.poster_path"
+          [src]="getProfileUrl(movie.poster_path)"
+          [alt]="movie.title" />
+      </ion-thumbnail>
+    </ion-item>
+  </ion-list>
+  
 </ion-content>
