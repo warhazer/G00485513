@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs'; // Import forkJoin to handle multiple API calls
 import {
@@ -34,7 +33,6 @@ import { PersonDetails, PersonMovieCredit } from 'src/app/models/movie.model';
     IonTitle,
     IonToolbar,
     CommonModule,
-    FormsModule,
     IonButtons,
     IonButton,
     IonIcon,
