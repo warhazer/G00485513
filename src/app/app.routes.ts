@@ -10,4 +10,20 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'home',
+    loadComponent: async () => (await import('./pages/home/home.page')).HomePage
+  },
+  {
+    path: 'movie-details',
+    loadComponent: async () => (await import('./pages/movie-details/movie-details.page')).MovieDetailsPage
+  },
+  {
+    path: 'details',
+    loadComponent: async () => (await import('./pages/details/details.page')).DetailsPage
+  },
+  {
+    path: 'favourites',
+    loadComponent: async () => (await import('./pages/favourites/favourites.page')).FavouritesPage
+  },
 ];
