@@ -11,15 +11,11 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'home',
-    loadComponent: async () => (await import('./pages/home/home.page')).HomePage
-  },
-  {
-    path: 'movie-details',
+    path: 'movie-details/:id',
     loadComponent: async () => (await import('./pages/movie-details/movie-details.page')).MovieDetailsPage
   },
   {
-    path: 'details',
+    path: 'details/:id',
     loadComponent: async () => (await import('./pages/details/details.page')).DetailsPage
   },
   {

@@ -84,7 +84,7 @@ export class HomePage implements OnInit {
 
   // Navigate to the movie details page
   openMovie(movie: Movie): void {
-    this.router.navigate(['/movie-details', movie.id]);
+    this.router.navigate(['/movie-details', movie.id], { state: { movie } });
   }
 
   // Navigate to the favourites page

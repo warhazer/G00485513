@@ -25,7 +25,7 @@
   <h2 class="section-heading">{{ heading }}</h2>
 
   <ion-list>
-    <ion-item *ngFor="let movie of movies" (click)="openMovie(movie)">
+    <ion-item *ngFor="let movie of movies" button (click)="openMovie(movie)">
       <ion-thumbnail slot="start">
         <img
           *ngIf="movie.poster_path"
@@ -34,7 +34,6 @@
         />
       </ion-thumbnail>
 
-
       <ion-label class="ion-text-wrap">
         <h2>{{ movie.title }}</h2>
         <p>{{ movie.overview }}</p>
@@ -42,5 +41,7 @@
     </ion-item>
   </ion-list>
 
-  <p *ngIf="movies.length === 0" class="empty-state">No movies found. Try a different search.</p>
+  <p *ngIf="movies.length === 0" class="empty-state">
+    No movies found. Try a different search.
+  </p>
 </ion-content>

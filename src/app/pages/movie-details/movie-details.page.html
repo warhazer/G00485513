@@ -1,13 +1,74 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>movie-details</ion-title>
+    <ion-title>{{ movie?.title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goHome()">
+        <ion-icon name="home" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="goToFavourites()">
+        <ion-icon name="heart" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">movie-details</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Movie Overview -->
+  <div class="overview" *ngIf="movie">
+    <p>{{ movie?.overview }}</p>
+  </div>
+
+  <!-- Favourite toggle button-->
+  <ion-button
+  *ngIf="movie"
+  expand="block"
+  (click)="toggleFavourite()">
+  <ion-icon name="heart" slot="icon-only"></ion-icon>
+  {{ isFavourite ? 'Remove from Favourites' : 'Add to Favourites' }}
+</ion-button>
+
+<!-- Cast section -->
+ <h2 class="section-heading">Cast</h2>
+ <ion-list>
+  <ion-item
+    *ngFor="let member of cast"
+    button
+    (click)="openPerson(member.id)">
+
+    <ion-thumbnail slot="start">
+      <img
+        *ngIf="member.profile_path"
+        [src]="getProfileUrl(member.profile_path)"
+        alt="{{ member.name }}"
+      />
+    </ion-thumbnail>
+    <ion-label>
+      <h3>{{ member.name }}</h3>
+      <p>{{ member.character }}</p>
+    </ion-label>
+  </ion-item>
+ </ion-list>
+
+ <!--Crew section -->
+ <h2 class="section-heading">Crew</h2>
+ <ion-list>
+  <ion-item
+    *ngFor="let member of crew"
+    button
+    (click)="openPerson(member.id)">
+
+    <ion-thumbnail slot="start">
+      <img
+        *ngIf="member.profile_path"
+        [src]="getProfileUrl(member.profile_path)"
+        alt="{{ member.name }}"
+      />
+    </ion-thumbnail>
+    <ion-label>
+      <h3>{{ member.name }}</h3>
+      <p>{{ member.job }}</p>
+    </ion-label>
+  </ion-item>
+ </ion-list>
+
 </ion-content>
