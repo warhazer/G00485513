@@ -2,7 +2,7 @@ export interface Movie {
   id: number;
   overview: string;
   poster_path: string | null;
-  title?: string;
+  title: string;
 }
 
 export interface CastMember {
