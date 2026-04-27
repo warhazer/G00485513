@@ -12,12 +12,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="person">
+<ion-content [fullscreen]="true">
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+
+<div *ngIf="!loading && person">
   <div class="profile-image">
-    <img
-      [src]="getProfileUrl(person.profile_path)"
-      alt="{{ person.name }}"
-    />
+    <img [src]="getProfileUrl(person.profile_path)" alt="{{ person.name }}" />
     <ng-template #noImage>
       <p class="no-image">No image available</p>
     </ng-template>
@@ -51,19 +55,13 @@
   <!-- Other movies -->
   <h2 class="section-heading">Other Movies</h2>
   <ion-list>
-    <ion-item
-      *ngFor="let movie of movies"
-      button
-      (click)="openMovie(movie)">
-
+    <ion-item *ngFor="let movie of movies" button (click)="openMovie(movie)">
       <ion-label>{{ movie.title }}</ion-label>
 
       <ion-thumbnail slot="end">
-        <img
-          [src]="getProfileUrl(movie.poster_path)"
-          [alt]="movie.title" />
+        <img [src]="getProfileUrl(movie.poster_path)" [alt]="movie.title" />
       </ion-thumbnail>
     </ion-item>
   </ion-list>
-  
+  </div>
 </ion-content>

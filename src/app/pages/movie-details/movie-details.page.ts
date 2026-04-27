@@ -13,6 +13,7 @@ import {
   IonLabel,
   IonList,
   IonThumbnail,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
@@ -42,6 +43,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     IonThumbnail,
     CommonModule,
     FormsModule,
+    IonSpinner,
   ],
 })
 
@@ -49,6 +51,7 @@ export class MovieDetailsPage implements OnInit {
   movie: Movie | null = null;
   cast: CastMember[] = [];
   crew: CrewMember[] = [];
+  loading: boolean = true;
 
 
   constructor(
@@ -72,6 +75,7 @@ export class MovieDetailsPage implements OnInit {
     this.tmdb.getMovieCredits(movieId).subscribe(response => {
       this.cast = response.cast;
       this.crew = response.crew;
+      this.loading = false;
     });
   }
 

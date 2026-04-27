@@ -17,6 +17,7 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonThumbnail,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 
 import {addIcons} from 'ionicons';
@@ -46,6 +47,7 @@ import { Movie } from '../../models/movie.model';
     IonButtons,
     IonRefresher,
     IonRefresherContent,
+    IonSpinner,
   ],
 })
 // Home page component that displays trending movies and allows searching for movies
@@ -53,6 +55,7 @@ export class HomePage implements OnInit {
   searchQuery: string = '';
   movies: Movie[] = [];
   heading: string = 'Today\'s Trending Movies';
+  loading: boolean = true;
 
   constructor(
     private tmdb: Tmdb,
@@ -67,9 +70,11 @@ export class HomePage implements OnInit {
 
   // Load trending movies from TMDb API
   loadTrending(): void {
+    this.loading = true;
     this.heading = 'Today\'s Trending Movies';
     this.tmdb.getTrendingMovies().subscribe(response => {
       this.movies = response.results;
+      this.loading = false;
     });
   }
 
@@ -80,9 +85,11 @@ export class HomePage implements OnInit {
       this.loadTrending();
       return;
     }
+    this.loading = true;
     this.heading = `${query} Movies`;
     this.tmdb.searchMovies(query).subscribe(response => {
       this.movies = response.results;
+      this.loading = false;
     });
   }
 

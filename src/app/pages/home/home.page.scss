@@ -42,3 +42,9 @@
 ion-thumbnail {
   --size: 100px;
 }
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+}

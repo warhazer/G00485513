@@ -12,9 +12,9 @@ import {
   IonIcon,
   IonItem,
   IonLabel,
-  IonInput,
   IonList,
   IonThumbnail,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart, home } from 'ionicons/icons';
@@ -40,11 +40,13 @@ import { PersonDetails, PersonMovieCredit } from 'src/app/models/movie.model';
     IonLabel,
     IonList,
     IonThumbnail,
+      IonSpinner,
   ],
 })
 export class DetailsPage implements OnInit {
   person: PersonDetails | null = null;
   movies: PersonMovieCredit[] = [];
+  loading: boolean = true;
 
   constructor(
     private router: Router,
@@ -65,6 +67,7 @@ export class DetailsPage implements OnInit {
       this.person = person;
       // Combine cast and crew credits into a single list of movies
       this.movies = [...credits.cast, ...credits.crew]; 
+      this.loading = false;
     });
   }
 
