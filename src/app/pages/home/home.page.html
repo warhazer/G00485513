@@ -31,7 +31,6 @@
     <ion-item *ngFor="let movie of movies" button (click)="openMovie(movie)">
       <ion-thumbnail slot="start">
         <img
-          *ngIf="movie.poster_path"
           [src]="getPosterUrl(movie.poster_path)"
           alt="{{ movie.title }}"
         />

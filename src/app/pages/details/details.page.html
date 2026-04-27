@@ -15,7 +15,6 @@
 <ion-content [fullscreen]="true" *ngIf="person">
   <div class="profile-image">
     <img
-      *ngIf="person.profile_path; else noImage"
       [src]="getProfileUrl(person.profile_path)"
       alt="{{ person.name }}"
     />
@@ -61,7 +60,6 @@
 
       <ion-thumbnail slot="end">
         <img
-          *ngIf="movie.poster_path"
           [src]="getProfileUrl(movie.poster_path)"
           [alt]="movie.title" />
       </ion-thumbnail>

@@ -67,7 +67,7 @@ export class Tmdb {
 
   // Helper method to construct full image URL from poster path
   getImageUrl(path: string | null): string {
-    return path ? `${environment.tmdbImageBaseUrl}${path}` : 'assets/placeholder.png';
+    return path ? `${environment.tmdbImageBaseUrl}${path}` : 'assets/images/placeholder.png';
   }
 
 }
