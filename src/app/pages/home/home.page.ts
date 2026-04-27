@@ -56,6 +56,7 @@ export class HomePage implements OnInit {
   movies: Movie[] = [];
   heading: string = 'Today\'s Trending Movies';
   loading: boolean = true;
+  hasSearched: boolean = false;
 
   constructor(
     private tmdb: Tmdb,
@@ -82,10 +83,12 @@ export class HomePage implements OnInit {
   onSearch(): void {
     const query = this.searchQuery.trim();
     if (!query) {
+      this.hasSearched = false;
       this.loadTrending();
       return;
     }
     this.loading = true;
+    this.hasSearched = true;
     this.heading = `${query} Movies`;
     this.tmdb.searchMovies(query).subscribe(response => {
       this.movies = response.results;

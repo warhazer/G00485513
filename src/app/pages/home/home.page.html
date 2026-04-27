@@ -10,15 +10,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-    <!-- Loading state -->
-  <div *ngIf="loading" class="loading-state">
-    <ion-spinner name="crescent"></ion-spinner>
-  </div>
-  
+  <!-- Pull to refresh -->
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
   <ion-item>
     <ion-label position="fixed">Search</ion-label>
     <ion-input
@@ -31,15 +32,12 @@
   <ion-button expand="block" (click)="onSearch()">Search</ion-button>
 
   <!-- Display search results  -->
-  <h2 class="section-heading">{{ heading }}</h2>
+  <h2 *ngIf="!loading" class="section-heading">{{ heading }}</h2>
 
-  <ion-list>
+  <ion-list *ngIf="!loading">
     <ion-item *ngFor="let movie of movies" button (click)="openMovie(movie)">
       <ion-thumbnail slot="start">
-        <img
-          [src]="getPosterUrl(movie.poster_path)"
-          alt="{{ movie.title }}"
-        />
+        <img [src]="getPosterUrl(movie.poster_path)" alt="{{ movie.title }}" />
       </ion-thumbnail>
 
       <ion-label class="ion-text-wrap">
@@ -49,7 +47,7 @@
     </ion-item>
   </ion-list>
 
-  <p *ngIf="movies.length === 0" class="empty-state">
-    No movies found. Try a different search.
+  <p *ngIf="!loading && movies.length === 0 && hasSearched" class="empty-state">
+    No movies found for "{{ searchQuery }}". Try a different search.
   </p>
 </ion-content>
