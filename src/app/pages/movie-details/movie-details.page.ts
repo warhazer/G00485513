@@ -39,7 +39,6 @@ import { ActivatedRoute, Router } from '@angular/router';
     IonIcon,
     IonItem,
     IonLabel,
-    IonInput,
     IonList,
     IonThumbnail,
     CommonModule,

@@ -13,6 +13,8 @@ import {
   IonThumbnail,
   IonButton,
   IonButtons,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/angular/standalone';
 
 import { Favourites } from '../../services/favourites';
@@ -39,6 +41,8 @@ import { home } from 'ionicons/icons';
     IonButton,
     IonIcon,
     IonButtons,
+    IonRefresher,
+    IonRefresherContent,
   ],
 })
 export class FavouritesPage {
@@ -66,5 +70,11 @@ export class FavouritesPage {
 
   getPosterUrl(path: string | null): string {
     return this.tmdb.getImageUrl(path);
+  }
+  
+  // Handle pull-to-refresh action to reload favourite movies
+  handleRefresh(event: any): void {
+    this.favouriteMovies = this.favourites.getAll(); // Refresh the list of favourite movies
+    event.target.complete(); // Signal that the refresh is complete
   }
 }

@@ -38,7 +38,6 @@ import { PersonDetails, PersonMovieCredit } from 'src/app/models/movie.model';
     IonIcon,
     IonItem,
     IonLabel,
-    IonInput,
     IonList,
     IonThumbnail,
   ],

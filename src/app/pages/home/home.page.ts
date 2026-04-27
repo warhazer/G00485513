@@ -14,6 +14,8 @@ import {
   IonLabel,
   IonInput,
   IonList,
+  IonRefresher,
+  IonRefresherContent,
   IonThumbnail,
 } from '@ionic/angular/standalone';
 
@@ -42,6 +44,8 @@ import { Movie } from '../../models/movie.model';
     IonList,
     IonThumbnail,
     IonButtons,
+    IonRefresher,
+    IonRefresherContent,
   ],
 })
 // Home page component that displays trending movies and allows searching for movies
@@ -97,4 +101,16 @@ export class HomePage implements OnInit {
     return this.tmdb.getImageUrl(path);
   }
 
+  // Handle pull-to-refresh action to reload trending movies
+  handleRefresh(event: any): void {
+    this.tmdb.getTrendingMovies().subscribe({
+      next: response => {
+        this.movies = response.results;
+        event.target.complete();
+      },
+      error: () => {
+        event.target.complete();
+      }
+    });
+  }
 }
