@@ -41,3 +41,8 @@ export interface PersonMovieCredit {
   title: string;
   poster_path: string | null;
 }
+
+export interface Genre {
+  id: number;
+  name: string;
+}

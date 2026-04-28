@@ -20,6 +20,22 @@
     <ion-spinner name="crescent"></ion-spinner>
   </div>
 
+  <!-- Genre filter -->
+  <ion-item>
+    <ion-label position="fixed">Genre</ion-label>
+    <ion-select
+      [(ngModel)]="selectedGenreId"
+      (ionChange)="onGenreChange($event)"
+      placeholder="All Genres"
+      interface="popover"
+    >
+      <ion-select-option value="">All Genres</ion-select-option>
+      <ion-select-option *ngFor="let genre of genres" [value]="genre.id">
+        {{ genre.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <ion-item>
     <ion-label position="fixed">Search</ion-label>
     <ion-input
@@ -46,6 +62,18 @@
       </ion-label>
     </ion-item>
   </ion-list>
+
+  <ion-infinite-scroll
+    *ngIf="!loading && movies.length > 0"
+    (ionInfinite)="loadMore($event)"
+    [disabled]="disableInfiniteScroll"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="crescent"
+      loadingText="Loading more movies..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
   <p *ngIf="!loading && movies.length === 0 && hasSearched" class="empty-state">
     No movies found for "{{ searchQuery }}". Try a different search.
