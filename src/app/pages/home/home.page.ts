@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
+import { ToastController } from '@ionic/angular/standalone';
 import {
   IonHeader,
   IonToolbar,
@@ -20,8 +22,8 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 
-import {addIcons} from 'ionicons';
-import {heart} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
+import { heart } from 'ionicons/icons';
 
 import { Tmdb } from '../../services/tmdb';
 import { Movie } from '../../models/movie.model';
@@ -54,15 +56,16 @@ import { Movie } from '../../models/movie.model';
 export class HomePage implements OnInit {
   searchQuery: string = '';
   movies: Movie[] = [];
-  heading: string = 'Today\'s Trending Movies';
+  heading: string = "Today's Trending Movies";
   loading: boolean = true;
   hasSearched: boolean = false;
 
   constructor(
     private tmdb: Tmdb,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController,
   ) {
-    addIcons({heart});
+    addIcons({ heart });
   }
 
   ngOnInit(): void {
@@ -72,11 +75,22 @@ export class HomePage implements OnInit {
   // Load trending movies from TMDb API
   loadTrending(): void {
     this.loading = true;
-    this.heading = 'Today\'s Trending Movies';
-    this.tmdb.getTrendingMovies().subscribe(response => {
-      this.movies = response.results;
-      this.loading = false;
-    });
+    this.heading = "Today's Trending Movies";
+
+    this.tmdb
+      .getTrendingMovies()
+      .pipe(
+        catchError(() => {
+          this.showError(
+            'Failed to load trending movies. Please try again later.',
+          );
+          return of({ results: [] } as any);
+        }),
+      )
+      .subscribe((response) => {
+        this.movies = response.results;
+        this.loading = false;
+      });
   }
 
   // Search for movies based on the search query
@@ -90,7 +104,12 @@ export class HomePage implements OnInit {
     this.loading = true;
     this.hasSearched = true;
     this.heading = `${query} Movies`;
-    this.tmdb.searchMovies(query).subscribe(response => {
+    this.tmdb.searchMovies(query).pipe(
+      catchError(() => {
+        this.showError('Failed to search movies. Please try again');
+        return of({ results: [] } as any);
+      })
+    ).subscribe((response) => {
       this.movies = response.results;
       this.loading = false;
     });
@@ -114,13 +133,25 @@ export class HomePage implements OnInit {
   // Handle pull-to-refresh action to reload trending movies
   handleRefresh(event: any): void {
     this.tmdb.getTrendingMovies().subscribe({
-      next: response => {
+      next: (response) => {
         this.movies = response.results;
         event.target.complete();
       },
       error: () => {
+        this.showError('Failed to refresh. Please try again later.');
         event.target.complete();
-      }
+      },
     });
+  }
+
+  // Show an error toast message
+  async showError(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      color: 'danger',
+      position: 'bottom',
+    });
+    await toast.present();
   }
 }

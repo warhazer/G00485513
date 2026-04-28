@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { forkJoin } from 'rxjs'; // Import forkJoin to handle multiple API calls
+import { forkJoin, catchError, of } from 'rxjs'; // Import forkJoin to handle multiple API calls
+import { ToastController } from '@ionic/angular';
 import {
   IonHeader,
   IonToolbar,
@@ -40,7 +41,7 @@ import { PersonDetails, PersonMovieCredit } from 'src/app/models/movie.model';
     IonLabel,
     IonList,
     IonThumbnail,
-      IonSpinner,
+    IonSpinner,
   ],
 })
 export class DetailsPage implements OnInit {
@@ -51,7 +52,8 @@ export class DetailsPage implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private tmdb: Tmdb
+    private tmdb: Tmdb,
+    private toastController: ToastController,
   ) {
     addIcons({ heart, home });
   }
@@ -63,15 +65,23 @@ export class DetailsPage implements OnInit {
     forkJoin({
       person: this.tmdb.getPersonDetails(personId),
       credits: this.tmdb.getPersonMovieCredits(personId),
-    }).subscribe(({ person, credits }) => {
+    })
+    .pipe(
+      catchError(() => {
+        this.showToast('Failed to load person details. Please try again later.');
+        return of({ person: null, credits: { cast: [], crew: [] } });
+      })
+    )
+    .subscribe(({ person, credits }) => {
       this.person = person;
       // Combine cast and crew credits into a single list of movies
-      this.movies = [...credits.cast, ...credits.crew]; 
+      this.movies = [...credits.cast, ...credits.crew];
       this.loading = false;
     });
   }
 
-  openMovie(movie: PersonMovieCredit) { // Navigate to the movie details page
+  openMovie(movie: PersonMovieCredit) {
+    // Navigate to the movie details page
     this.router.navigate(['/movie-details', movie.id], { state: { movie } });
   }
 
@@ -85,5 +95,15 @@ export class DetailsPage implements OnInit {
 
   getProfileUrl(path: string | null): string {
     return this.tmdb.getImageUrl(path);
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      color: 'danger',
+      position: 'bottom',
+    });
+    await toast.present();
   }
 }
