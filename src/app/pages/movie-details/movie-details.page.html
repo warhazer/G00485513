@@ -44,9 +44,13 @@
     >
       <ion-thumbnail slot="start">
         <img
+          *ngIf="member.profile_path; else noImage"
           [src]="getProfileUrl(member.profile_path)"
           alt="{{ member.name }}"
         />
+        <ng-template #noImage>
+          <p class="no-image">No image</p>
+        </ng-template>
       </ion-thumbnail>
       <ion-label>
         <h3>{{ member.name }}</h3>
@@ -65,9 +69,13 @@
     >
       <ion-thumbnail slot="start">
         <img
+          *ngIf="member.profile_path; else noImage"
           [src]="getProfileUrl(member.profile_path)"
           alt="{{ member.name }}"
         />
+        <ng-template #noImage>
+          <p class="no-image">No image</p>
+        </ng-template>
       </ion-thumbnail>
       <ion-label>
         <h3>{{ member.name }}</h3>

@@ -21,7 +21,7 @@
 
 <div *ngIf="!loading && person">
   <div class="profile-image">
-    <img [src]="getProfileUrl(person.profile_path)" alt="{{ person.name }}" />
+    <img *ngIf="person.profile_path; else noImage" [src]="getProfileUrl(person.profile_path)" alt="{{ person.name }}" />
     <ng-template #noImage>
       <p class="no-image">No image available</p>
     </ng-template>
